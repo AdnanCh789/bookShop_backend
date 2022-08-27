@@ -1,0 +1,9 @@
+{
+  "cloudinary": {
+    "cloudName": "bookTrekker_cloudName",
+    "apiKey": "bookTrekker_apiKey",
+    "apiSecret": "bookTrekker_apiSecret"
+  },
+  "jwtPrivateKey": "bookTrekker_jwtPrivateKey"
+
+}

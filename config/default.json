@@ -1,0 +1,14 @@
+{
+    "cloudinary": {
+        "cloud_name": "",
+        "api_key": "",
+        "api_secret": ""
+      },
+    "server" : {
+        "port" : 5000
+    },
+    "db": "mongodb://localhost/book-trekker",
+    "jwtPrivateKey": "",
+    "salt":10
+    
+}
