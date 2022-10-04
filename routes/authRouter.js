@@ -7,8 +7,6 @@ const {
   signout,
 } = require("../controllers/authController");
 
-const { getUsers } = require("../controllers/userController");
-
 router.post("/signup", [validateSignup, signup]);
 router.post("/signin", signin);
 router.get("/signout", signout);

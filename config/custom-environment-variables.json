@@ -4,6 +4,11 @@
     "apiKey": "bookTrekker_apiKey",
     "apiSecret": "bookTrekker_apiSecret"
   },
+  "braintree": {
+    "BRAINTREE_MERCHANT_ID":"bookTrekker_braintree_merchantId",
+    "BRAINTREE_PRIVATE_KEY":"bookTrekker_braintree_privateKey",
+    "BRAINTREE_PUBLIC_KEY":"bookTrekker_braintree_publicKey"
+  },
   "jwtPrivateKey": "bookTrekker_jwtPrivateKey"
 
 }

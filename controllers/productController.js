@@ -16,8 +16,6 @@ const fieldsValidation = (req, res, next) => {
 
   // fields validation
   const { error } = validateProduct(req.productData);
-
-  //if error => throw it to global error handler
   if (error) {
     //removing prev image
     deleteImage(req.file.filename);
@@ -62,15 +60,6 @@ const deleteImage = async (image) => {
   }
 };
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 // Methods for product controller
 // upload a single photo
 
@@ -79,25 +68,16 @@ exports.uploadProductPhoto = multer(multerOptions).single("photo");
 //create a new product
 exports.createProduct = catchAsync(async (req, res) => {
   const product = new Product(req.productData);
-
-  await product.save();
-
-  // const newProduct = await Product.findById(product._id).populate(
-  //   "category",
-  //   "name",
-  //   "_id"
-  // );
-
   res.send(product);
+  await product.save();
 });
 
 exports.getProducts = catchAsync(async (req, res) => {
   let order = req.query.order ? req.query.order : "asc";
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-  let limit = req.query.limit ? parseInt(req.query.limit) : 2;
+  let limit = req.query.limit ? parseInt(req.query.limit) : 3;
 
   const products = await Product.find()
-    .select("-photo")
     .populate({
       path: "category",
       select: "name",
@@ -105,8 +85,9 @@ exports.getProducts = catchAsync(async (req, res) => {
     .sort([[sortBy, order]])
     .limit(limit)
     .exec();
-
-  res.send(products);
+  setTimeout(() => {
+    res.send(products);
+  }, 1000);
 });
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
@@ -122,14 +103,18 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
 });
 
 exports.productById = async (req, res, next, id) => {
-  const product = await Product.findById(id);
+  const product = await Product.findById(id)
+    .populate("category", "name _id")
+    .exec();
   if (!product) return res.status(400).send("Product not found..");
   req.product = product;
   next();
 };
 
 exports.getProduct = (req, res) => {
-  res.send({ product: req.product });
+  setTimeout(() => {
+    res.send(req.product);
+  }, 500);
 };
 
 exports.deleteProduct = catchAsync(async (req, res) => {
@@ -141,25 +126,27 @@ exports.deleteProduct = catchAsync(async (req, res) => {
 
 exports.updateProduct = catchAsync(async (req, res) => {
   const { photo } = req.product;
-  deleteImage(photo.publicId);
+
   const product = await Product.findByIdAndUpdate(
     { _id: req.product._id },
     { $set: req.body },
     { new: true }
   );
-  res.send({ product });
+  deleteImage(photo.publicId);
+
+  res.send(product);
 });
 
 exports.getRelatedProducts = catchAsync(async (req, res) => {
   const limit = req.query.limit ? parseInt(req.query.limit) : 4;
   const products = await Product.find({
-    _id: { $ne: req.product },
     category: req.product.category,
+    _id: { $ne: req.product._id },
   })
     .limit(limit)
     .exec();
 
-  res.send({ products });
+  res.send(products);
 });
 
 exports.getProductCategories = catchAsync(async (req, res, next) => {
@@ -200,4 +187,39 @@ exports.productsBySearch = catchAsync(async (req, res) => {
     size: data.length,
     data,
   });
+});
+
+exports.search = catchAsync(async (req, res, next) => {
+  const query = {};
+  const { search, category } = req.query;
+
+  if (search) query.name = { $regex: search, $options: "i" };
+
+  if (category && category !== "all") query.category = category;
+
+  // now find the products based on the query
+
+  const products = await Product.find(query)
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .exec();
+
+  res.send(products);
+});
+
+exports.updateQuantity = catchAsync(async (req, res, next) => {
+  let bulkOps = req.body.order.products.map((p) => {
+    return {
+      updateOne: {
+        filter: { _id: p._id },
+        update: { $inc: { quantity: -p.count, sold: +p.count } },
+      },
+    };
+  });
+
+  await Product.bulkWrite(bulkOps, {});
+
+  next();
 });

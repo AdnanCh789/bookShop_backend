@@ -3,6 +3,8 @@ const authRoutes = require("../routes/authRouter");
 const userRoutes = require("../routes/userRouter");
 const categoryRoutes = require("../routes/categoryRouter");
 const productRoutes = require("../routes/productRouter");
+const braintreeRoutes = require("../routes/braintreeRouter");
+const ordersRoutes = require("../routes/ordersRouter");
 
 const morgan = require("morgan");
 const cors = require("cors");
@@ -23,6 +25,8 @@ module.exports = (app) => {
   app.use("/api", authRoutes);
   app.use("/api/category", categoryRoutes);
   app.use("/api/product", productRoutes);
+  app.use("/api/braintree", braintreeRoutes);
+  app.use("/api/orders", ordersRoutes);
 
   //
   // app.all("*", (req, res, next) => {

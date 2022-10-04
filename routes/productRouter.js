@@ -21,6 +21,7 @@ const {
   deleteProduct,
   updateProduct,
   productsBySearch,
+  search,
 } = require("../controllers/productController");
 
 const authUser = [
@@ -36,8 +37,10 @@ const deletion = [requireSignin, isAuth, isAdmin];
 router.get("/", getProducts);
 router.get("/all", getAllProducts);
 router.get("/cat", getProductCategories);
+router.get("/search", search);
 router.get("/:productId", getProduct);
 router.get("/related/:productId", getRelatedProducts);
+
 router.post("/by/search/", productsBySearch);
 router.post("/create/:userId", authUser, createProduct);
 router.put("/update/:productId/:userId", authUser, updateProduct);

@@ -4,6 +4,11 @@
         "api_key": "",
         "api_secret": ""
       },
+      "braintree": {
+        "BRAINTREE_MERCHANT_ID":"",
+        "BRAINTREE_PRIVATE_KEY":"",
+        "BRAINTREE_PUBLIC_KEY":""
+      },
     "server" : {
         "port" : 5000
     },
@@ -12,3 +17,4 @@
     "salt":10
     
 }
+
