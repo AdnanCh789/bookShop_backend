@@ -1,20 +1,18 @@
 {
-    "cloudinary": {
-        "cloud_name": "",
-        "api_key": "",
-        "api_secret": ""
-      },
-      "braintree": {
-        "BRAINTREE_MERCHANT_ID":"",
-        "BRAINTREE_PRIVATE_KEY":"",
-        "BRAINTREE_PUBLIC_KEY":""
-      },
-    "server" : {
-        "port" : 5000
-    },
-    "db": "mongodb://localhost/book-trekker",
-    "jwtPrivateKey": "",
-    "salt":10
-    
+  "cloudinary": {
+    "cloud_name": "",
+    "api_key": "",
+    "api_secret": ""
+  },
+  "braintree": {
+    "BRAINTREE_MERCHANT_ID": "",
+    "BRAINTREE_PRIVATE_KEY": "",
+    "BRAINTREE_PUBLIC_KEY": ""
+  },
+  "server": {
+    "port": 5001
+  },
+  "db": "mongodb://localhost/book-trekker",
+  "jwtPrivateKey": "",
+  "salt": 10
 }
-
